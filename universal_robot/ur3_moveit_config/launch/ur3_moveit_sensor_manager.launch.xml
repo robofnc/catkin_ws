@@ -1,0 +1,15 @@
+<launch>
+    <arg name="camera_link_pose"/>
+	<arg name="kinect" default="true"/>
+<!--i do not know why underprogram unactive . so now launch indivisual package-->
+	
+	<!-- <include file="$(find robotiq_2f_85_gripper_visualization)/launch/test_2f_85_model.launch"></include> -->
+	
+<!-- Users update this to set transform between camera and robot-->
+      <!-- <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" args="$(arg camera_link_pose) /ee_link /robotiq_arg2f_base_link 100" />  -->
+<!-- octomap parameters for moveit -->
+	<!-- <group ns="move_group" >
+      	 <param name="octomap_frame" type="string" value="camera_link" />
+      	 <param name="octomap_resolution" type="double" value="0.02" />
+    </group> -->
+</launch>
