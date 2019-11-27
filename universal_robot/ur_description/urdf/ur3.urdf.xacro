@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://wiki.ros.org/xacro">
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
 
 <!--
   Author: Felix Messmer
@@ -19,13 +19,12 @@
   </xacro:macro>
 
   <xacro:macro name="ur3_robot" params="prefix joint_limited
-    shoulder_pan_lower_limit:=${-pi}    shoulder_pan_upper_limit:=${pi}
-    shoulder_lift_lower_limit:=${-pi}    shoulder_lift_upper_limit:=${pi}
-    elbow_joint_lower_limit:=${-pi}    elbow_joint_upper_limit:=${pi}
-    wrist_1_lower_limit:=${-pi}    wrist_1_upper_limit:=${pi}
-    wrist_2_lower_limit:=${-pi}    wrist_2_upper_limit:=${pi}
-    wrist_3_lower_limit:=${-pi}    wrist_3_upper_limit:=${pi}
-    transmission_hw_interface:=hardware_interface/PositionJointInterface">
+     shoulder_pan_lower_limit:=${-pi}    shoulder_pan_upper_limit:=${pi}
+     shoulder_lift_lower_limit:=${-pi}    shoulder_lift_upper_limit:=${pi}
+     elbow_joint_lower_limit:=${-pi}    elbow_joint_upper_limit:=${pi}
+     wrist_1_lower_limit:=${-pi}    wrist_1_upper_limit:=${pi}
+     wrist_2_lower_limit:=${-pi}    wrist_2_upper_limit:=${pi}
+     wrist_3_lower_limit:=${-pi}    wrist_3_upper_limit:=${pi}">
 
     <!-- Inertia parameters -->
     <xacro:property name="base_mass" value="2.0" />  <!-- This mass might be incorrect -->
@@ -83,7 +82,7 @@
         </geometry>
       </collision>
       <xacro:cylinder_inertial radius="0.075" length="0.038" mass="${base_mass}">
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+        <origin xyz="0.0 0.0 0.04" rpy="0 0 0" />
       </xacro:cylinder_inertial>
     </link>
 
@@ -287,30 +286,171 @@
 
     <joint name="${prefix}ee_fixed_joint" type="fixed">
       <parent link="${prefix}wrist_3_link" />
-      <child link = "${prefix}robotiq_arg2f_base_link" />
-      <origin xyz="0.0 ${wrist_3_length} 0.0" rpy="0.0 ${pi/2.0} ${pi/2.0}" />
+      <child link = "${prefix}ee_link" />
+      <origin xyz="0.0 0.23101 0.0" rpy="${pi/2.0} ${pi/2.0} ${pi/2.0}" />
     </joint>
 
-    <!-- <joint name="${prefix}ee_fixed_joint" type="fixed">
-      <parent link="${prefix}wrist_3_link" />
-      <child link = "${prefix}ee_link" />
-      <origin xyz="0.0 ${wrist_3_length} 0.0" rpy="0.0 0.0 ${pi/2.0}" />
-    </joint> -->
 
     <!-- <link name="${prefix}ee_link">
+    <visual>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur3/visual/osd.stl"/>
+        </geometry>
+        <material name="LightGrey">
+          <color rgba="0.8 0.8 0.8 1.0"/>
+        </material>
+    </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur3/visual/osd.stl"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="-0.015 0.135 0"/>      
+        </collision>
+    </link> -->
+    
+    <link name="${prefix}ee_link">
       <collision>
         <geometry>
           <box size="0.01 0.01 0.01"/>
         </geometry>
         <origin rpy="0 0 0" xyz="-0.01 0 0"/>
       </collision>
-    </link> -->
+      <material name="LightGrey">
+          <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </link>
 
-    <xacro:ur_arm_transmission prefix="${prefix}" hw_interface="${transmission_hw_interface}" />
+    
+    <joint name="${prefix}camera_fixed_joint" type="fixed">
+      <parent link="${prefix}wrist_3_link" />
+      <child link = "${prefix}camerass_link" />
+      <origin xyz="-0.02 0.12443 0.0293" rpy="${0} ${0} ${pi/2}" />
+    </joint>
+
+    <link name="${prefix}camerass_link">
+      <collision>
+        <geometry>
+          <box size="0.01 0.01 0.01"/>
+        </geometry>
+        <origin rpy="00 0 0" xyz="0 0 0"/>
+      </collision>
+    </link>  
+
+
+
+    <joint name="${prefix}force_jyoint" type="fixed">
+      <parent link="${prefix}wrist_3_link" />
+      <child link = "${prefix}force_mount_link" />
+      <origin xyz="0 ${wrist_3_length} 0" rpy="${0} ${pi/2} ${pi/2}" />
+    </joint>
+
+
+    <link name="${prefix}force_mount_link">
+    <visual>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur3/visual/force_mount.stl"/>
+        </geometry>
+        <material name="Light_Blue">
+          <color rgba="0.0 1.0 1.0 1.0"/>
+        </material>
+    </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur3/visual/force_mount.stl"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>      
+        </collision>
+    </link>  
+
+
+        <joint name="${prefix}force_top_joy" type="fixed">
+      <parent link="${prefix}force_mount_link" />
+      <child link = "${prefix}force_top_link" />
+      <origin xyz="${0} ${0} ${0.008}" rpy="${0} ${0} ${0}" />
+    </joint>
+
+
+    <link name="${prefix}force_top_link">
+    <visual>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur3/visual/dynpick.stl"/>
+        </geometry>
+        <material name="red">
+          <color rgba="0.5 0.0 0.0 1.0"/>
+        </material>
+    </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur3/visual/dynpick.stl"/>
+        </geometry>
+        <origin rpy="0 0 ${0}" xyz="0 0 0"/>      
+        </collision>
+    </link>  
+
+
+
+    <joint name="${prefix}camera_mount_joy" type="fixed">
+      <parent link="${prefix}force_top_link" />
+      <child link = "${prefix}camera_mount_link" />
+      <origin xyz="${0} ${0} ${0.0325}" rpy="${0} ${0} ${pi}" />
+    </joint>
+
+
+    <link name="${prefix}camera_mount_link">
+    <visual>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur3/visual/cameramout.stl"/>
+        </geometry>
+        <material name="Light_Blue">
+          <color rgba="0.0 1.0 1.0 1.0"/>
+        </material>
+    </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur3/visual/cameramout.stl"/>
+        </geometry>
+        <origin rpy="0 0 ${0}" xyz="0 0 0"/>      
+        </collision>
+    </link>  
+
+
+    <joint name="${prefix}robotiq_fixed_joint" type="fixed">
+      <parent link="${prefix}camera_mount_link" />
+      <child link = "${prefix}robotiq_arg2f_base_link" />
+      <origin xyz="${0.0} ${0.0} ${0.025}" rpy="0.0 ${0.0} ${0.0}" />
+    </joint>
+
+
+
+    <joint name="${prefix}realsence_base_joint" type="fixed">
+      <parent link="${prefix}camera_mount_link" />
+      <child link = "${prefix}camera_base_link" />
+      <!-- z= 0.008+0.01018-->
+      <origin xyz="${0.055} ${0.0} ${0.01818}" rpy="${pi} ${3*pi/2.0} ${0}" />
+    </joint>
+
+
+
+
+    
+    
+
+   
+
+
+
+    
+
+
+
+    <xacro:ur_arm_transmission prefix="${prefix}" />
     <xacro:ur_arm_gazebo prefix="${prefix}" />
 
     <!-- ROS base_link to UR 'Base' Coordinates transform -->
     <link name="${prefix}base"/>
+    
+
+    
     <joint name="${prefix}base_link-base_fixed_joint" type="fixed">
       <!-- NOTE: this rotation is only needed as long as base_link itself is
                  not corrected wrt the real robot (ie: rotated over 180
@@ -328,6 +468,9 @@
       <parent link="${prefix}wrist_3_link"/>
       <child link="${prefix}tool0"/>
     </joint>
+
+
+    
 
   </xacro:macro>
 </robot>

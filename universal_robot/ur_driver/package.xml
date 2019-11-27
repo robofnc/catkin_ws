@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>ur_driver</name>
-  <version>1.2.5</version>
+  <version>1.2.1</version>
   <description>
       Driver for the UR5/10 arm based on the Polyscope control scheme.
   </description>
@@ -9,9 +9,8 @@
   <author>Stuart Glaser</author>
   <author>Shaun Edwards</author>
   <author>Felix Messmer</author>
-  <maintainer email="g.a.vanderhoorn@tudelft.nl">G.A. vd. Hoorn</maintainer>
-  <maintainer email="miguel.prada@tecnalia.com">Miguel Prada Sarasola</maintainer>
   <maintainer email="nhg@ipa.fhg.de">Nadia Hammoudeh Garcia</maintainer>
+  <maintainer email="g.a.vanderhoorn@tudelft.nl">G.A. vd. Hoorn</maintainer>
 
   <license>BSD</license>
   <url type="website">http://ros.org/wiki/ur_driver</url>

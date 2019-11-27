@@ -15,7 +15,6 @@ add_message_files(
    IOStates.msg
    RobotStateRTMsg.msg
    MasterboardDataMsg.msg
-   RobotModeDataMsg.msg
    ToolDataMsg.msg
 )
 
