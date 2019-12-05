@@ -417,8 +417,31 @@
     <joint name="${prefix}robotiq_fixed_joint" type="fixed">
       <parent link="${prefix}camera_mount_link" />
       <child link = "${prefix}robotiq_arg2f_base_link" />
-      <origin xyz="${0.0} ${0.0} ${0.025}" rpy="0.0 ${0.0} ${0.0}" />
+      <origin xyz="${0.0} ${0.0} ${0.008}" rpy="0.0 ${0.0} ${pi/2.0}" />
     </joint>
+
+
+    <link name="${prefix}robotiq_arg2f_base_link">
+    <visual>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur3/visual/hando_model.stl"/>
+        </geometry>
+        <material name="Light">
+          <color rgba="0.96875 0.70703125 0.0 1.0"/>
+        </material>
+    </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur3/visual/hando_model.stl"/>
+        </geometry>
+        <origin rpy="0 0 ${0}" xyz="0 0 0"/>      
+        </collision>
+    </link>  
+
+
+
+
+
 
 
 
