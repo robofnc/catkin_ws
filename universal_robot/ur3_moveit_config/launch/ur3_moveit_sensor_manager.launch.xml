@@ -4,9 +4,14 @@
 <!--i do not know why underprogram unactive . so now launch indivisual package-->
 	
 	<include file="$(find realsense2_camera)/launch/rs_rgbd.launch"></include>
+	<!--<include file="$(find zed_wrapper)/launch/zedm.launch"></include>-->
 	
 <!-- Users update this to set transform between camera and robot-->
-      <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" args="$(arg camera_link_pose) /camerass_link /camera_link 100" /> 
+
+   	<node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" args="$(arg camera_link_pose) /camerass_link /camera_link  50" />
+
+	<!--<node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" args="$(arg camera_link_pose) /camerass_link /zeds_link  100" />-->
+	
 <!-- octomap parameters for moveit -->
 	<group ns="move_group" >
       	 <param name="octomap_frame" type="string" value="camera_link" />

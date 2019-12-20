@@ -45,6 +45,12 @@ import roslib; roslib.load_manifest('robotiq_2f_gripper_control')
 import rospy
 from robotiq_2f_gripper_control.msg import _Robotiq2FGripper_robot_output  as outputMsg
 from time import sleep
+from std_msgs.msg import Char
+
+global command
+command = outputMsg.Robotiq2FGripper_robot_output()
+
+pub = rospy.Publisher('Robotiq2FGripperRobotOutput', outputMsg.Robotiq2FGripper_robot_output, queue_size = 10)
 
 
 def genCommand(char, command):
@@ -130,15 +136,47 @@ def askForCommand(command):
 
     return raw_input(strAskForCommand)
 
+def callback(message):    
+
+    print(message.data)
+
+    global command
+
+    command = genCommand(message.data, command)            
+    pub.publish(command)
+
+
 def publisher():
     """Main loop which requests new commands and publish them on the Robotiq2FGripperRobotOutput topic."""
     rospy.init_node('Robotiq2FGripperSimpleController')
-    
-    pub = rospy.Publisher('Robotiq2FGripperRobotOutput', outputMsg.Robotiq2FGripper_robot_output)
 
-    command = outputMsg.Robotiq2FGripper_robot_output();
+    
+    sub = rospy.Subscriber('CommandTopic', Char, callback)
+    
+    global command
+
+    command = genCommand('r', command)            
+    pub.publish(command)
+    print("reset")
+    rospy.sleep(3)
+
+    command = genCommand('a', command)            
+    pub.publish(command)
+    print("activate")
+    rospy.sleep(5)
+
+    # command = genCommand('c', command)            
+    # pub.publish(command)
+    # print("close")
+    # rospy.sleep(3)
+
+    # command = genCommand('o', command)            
+    # pub.publish(command)
+    # print("open")
+    # rospy.sleep(3)
 
     while not rospy.is_shutdown():
+
 
         command = genCommand(askForCommand(command), command)            
         
@@ -149,3 +187,5 @@ def publisher():
 
 if __name__ == '__main__':
     publisher()
+
+    

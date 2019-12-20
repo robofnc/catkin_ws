@@ -9,6 +9,8 @@
     <arg name="world_name" default="worlds/empty.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="gui" value="$(arg gui)"/>
+    <param name ="/use_sim_time" value="true"/>
+  
   </include>
 
   <!-- send robot urdf to param server -->
@@ -31,5 +33,5 @@
   </include> 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ur_gazebo)/launch/UR3_sim.rviz"/>
 
-
+ 
 </launch>

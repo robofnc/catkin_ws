@@ -285,13 +285,43 @@
     </link>
 
     <joint name="${prefix}ee_fixed_joint" type="fixed">
-      <parent link="${prefix}wrist_3_link" />
+      <parent link="${prefix}force_mount_link" />
       <child link = "${prefix}ee_link" />
-      <origin xyz="0.0 0.23101 0.0" rpy="${pi/2.0} ${pi/2.0} ${pi/2.0}" />
+      <!-- <origin xyz="0.0 0.0 0.212242" rpy="${pi} 0 ${-pi/2.0} " /> -->
+      <!-- close +12mm -->
+      <origin xyz="0.0 0.0 0.224242" rpy="${pi} 0 ${-pi/2.0} " />
+    </joint>
+    
+    <link name="${prefix}ee_link">
+      <collision>
+        <geometry>
+          <box size="0.01 0.01 0.01"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="-0.01 0 0"/>
+      </collision>
+    </link>
+
+    
+    <joint name="${prefix}camera_fixed_joint" type="fixed">
+      <parent link="${prefix}wrist_3_link" />
+      <child link = "${prefix}camerass_link" />
+      
+      <origin xyz="-0.02 0.12443 0.0293" rpy="${0} ${0} ${pi/2.0}" />
     </joint>
 
+    <link name="${prefix}camerass_link">
+      <collision>
+        <geometry>
+          <box size="0.01 0.01 0.01"/>
+        </geometry>
+        <origin rpy="00 0 0" xyz="0 0 0"/>
+      </collision>
+    </link>  
 
-    <!-- <link name="${prefix}ee_link">
+
+
+    <!--
+    <link name="${prefix}ee_link">
     <visual>
         <geometry>
           <mesh filename="package://ur_description/meshes/ur3/visual/osd.stl"/>
@@ -306,35 +336,8 @@
         </geometry>
         <origin rpy="0 0 0" xyz="-0.015 0.135 0"/>      
         </collision>
-    </link> -->
-    
-    <link name="${prefix}ee_link">
-      <collision>
-        <geometry>
-          <box size="0.01 0.01 0.01"/>
-        </geometry>
-        <origin rpy="0 0 0" xyz="-0.01 0 0"/>
-      </collision>
-      <material name="LightGrey">
-          <color rgba="0.7 0.7 0.7 1.0"/>
-      </material>
     </link>
-
-    
-    <joint name="${prefix}camera_fixed_joint" type="fixed">
-      <parent link="${prefix}wrist_3_link" />
-      <child link = "${prefix}camerass_link" />
-      <origin xyz="-0.02 0.12443 0.0293" rpy="${0} ${0} ${pi/2}" />
-    </joint>
-
-    <link name="${prefix}camerass_link">
-      <collision>
-        <geometry>
-          <box size="0.01 0.01 0.01"/>
-        </geometry>
-        <origin rpy="00 0 0" xyz="0 0 0"/>
-      </collision>
-    </link>  
+    -->
 
 
 
@@ -413,7 +416,7 @@
         </collision>
     </link>  
 
-
+    
     <joint name="${prefix}robotiq_fixed_joint" type="fixed">
       <parent link="${prefix}camera_mount_link" />
       <child link = "${prefix}robotiq_arg2f_base_link" />
@@ -444,22 +447,12 @@
 
 
 
-
     <joint name="${prefix}realsence_base_joint" type="fixed">
       <parent link="${prefix}camera_mount_link" />
       <child link = "${prefix}camera_base_link" />
       <!-- z= 0.008+0.01018-->
       <origin xyz="${0.055} ${0.0} ${0.01818}" rpy="${pi} ${3*pi/2.0} ${0}" />
     </joint>
-
-
-
-
-    
-    
-
-   
-
 
 
     
@@ -491,9 +484,6 @@
       <parent link="${prefix}wrist_3_link"/>
       <child link="${prefix}tool0"/>
     </joint>
-
-
-    
 
   </xacro:macro>
 </robot>

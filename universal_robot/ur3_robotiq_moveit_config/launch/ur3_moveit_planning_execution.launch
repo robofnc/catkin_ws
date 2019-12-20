@@ -11,4 +11,6 @@
     <arg name="limited" default="$(arg limited)"/>
     <arg name="debug" default="$(arg debug)" />
   </include>
+
+  <include file="$(find ur3_robotiq_moveit_config)/launch/moveit_rviz.launch" />
 </launch>

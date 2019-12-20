@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="sim" default="false" />
+  <arg name="config" default="true"/>
+  <!-- <arg name="limited" default="false"/>
+  <arg name="debug" default="false" /> -->
+
+  <!-- By default we do not overwrite the URDF. Change the following to true to change the default behavior -->
+   <arg name="load_robot_description" default="false"/>
+
+
+  <!--<include planning_cotext.launch>-->
+    <include file="$(find ur3_mody_moveit_cofing)/launch/planning_context.launch">
+    	<arg name="load_robot_description" value="$(arg load_robot_description)"/>
+    </include>
+    
+  <!-- Remap follow_joint_trajectory -->
+  <remap if="$(arg sim)" from="/follow_joint_trajectory" to="/arm_controller/follow_joint_trajectory"/>
+  <!-- add own script -->
+
+  <remap from="/joint_states" to="/joint_states_ur3"/>
+
+  <!-- Launch moveit -->
+  <include file="$(find ur3_mody_moveit_cofing)/launch/move_group.launch">
+    <!-- <arg name="limited" default="$(arg limited)"/>
+    <arg name="debug" default="$(arg debug)" /> -->
+  </include>
+
+
+  <include file="$(find ur3_moveit_config)/launch/moveit_rviz.launch">
+   	<arg name="config" value="$(arg config)" />
+  </include>
+
+
+
+</launch>
